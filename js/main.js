@@ -12,9 +12,12 @@ function main() {
   let jugar = false;
   let contador = 0;
 
+
+  // eslint-disable-next-line no-undef
   const jugador = new Jugador(w / 2, h / 2, 20, 20, undefined, 'red');
 
-  const bala = new Proyectil((w / 2) + 20, h - 40, 20, 20);
+  // eslint-disable-next-line no-undef
+  const bala = new Proyectil((w / 2) + 20, (h / 2) - 20, 20, 20);
 
   let enemigos = new Array([]);
 
@@ -65,6 +68,11 @@ function main() {
       default:
         break;
     }
+
+    if(activo == true) {
+      bala.xSupIzq = jugador.xSupIzq+20;
+      bala.ySupIzq = jugador.ySupIzq-20;
+    }
   }
 
   // NUMERO RANDOM
@@ -78,14 +86,11 @@ function main() {
   
   function activador(e) {
     if (activo === true) {
-      bala.xSupIzq = jugador.limiteDer;
-      bala.ySupIzq = jugador.limiteArriba - 20;
 
       const parar = setInterval(() => {
         activo = false;
        
         for (let i = 0; i < enemigos.length; i++) {
-          bala.colorRelleno = 'black';
           if(bala.xSupIzq < (e.clientX - 20)) {
             bala.moverDerecha();
           }
@@ -122,10 +127,12 @@ function main() {
           if ((e.clientY - 20) == bala.ySupIzq && (e.clientX - 20) == bala.xSupIzq) {
             clearInterval(parar);
             activo = true;
-            bala.colorRelleno = 'rgba(255, 255, 255, 0)';
           }
 
           // COLICION CON ENEMIGO
+          /*
+          * DEBE DE reiniciar DE FORMA ALEATORIA ENTRE LAS ESQUINAS
+          */
           if (enemigos[i].colisionarCon(bala)) {
             enemigos[i].ySupIzq = 0;
             enemigos[i].xSupIzq = generateRandom(800);
@@ -133,7 +140,6 @@ function main() {
             enemigos[i].colorRelleno = `rgb(${generateRandom(250)},${generateRandom(250)},${generateRandom(250)})`;
 
             contador += 1;
-
             document.getElementById('contador').textContent = contador;
           }
         }
@@ -141,23 +147,65 @@ function main() {
         setTimeout(() => {
           clearInterval(parar);
           activo = true;
-          bala.colorRelleno = 'rgba(255, 255, 255, 0)';
         }, 3500);
       }, 10);
     }
   }
 
-  function reposicionar() {
+  //REPOSICIONA ENEMIGOS AL REDEDOR
+  function reposicionarEnemigo(enemigo) {
+    enemigo.vx = velocidadRandom();
+
+    switch (generateRandom(4)) {
+      case 1:
+        enemigo.ySupIzq = 0;
+        enemigo.xSupIzq = generateRandom(800);
+        enemigo.colorRelleno = `rgb(${generateRandom(250)},${generateRandom(250)},${generateRandom(250)})`;
+        console.log('arriba');
+        break;
+
+      case 2:
+        enemigo.ySupIzq = generateRandom(600);
+        enemigo.xSupIzq = 800;
+        enemigo.colorRelleno = `rgb(${generateRandom(250)},${generateRandom(250)},${generateRandom(250)})`;
+        break;
+
+      case 3:
+        enemigo.ySupIzq = 600;
+        enemigo.xSupIzq = generateRandom(800);
+        enemigo.colorRelleno = `rgb(${generateRandom(250)},${generateRandom(250)},${generateRandom(250)})`;
+
+        break;
+
+      case 4:
+        enemigo.ySupIzq = generateRandom(600);
+        enemigo.xSupIzq = 0;
+        enemigo.colorRelleno = `rgb(${generateRandom(250)},${generateRandom(250)},${generateRandom(250)})`;
+        break;
+
+      default:
+        break;
+    }
+  }
+
+  function velocidadRandom() {
+    let numero = Math.random()*(1.5 - 0.5)+0.5;
+    return numero;
+  }
+
+  //REINCIA EL JUEGO
+  function reiniciar() {
     enemigos = [];
     jugador.xSupIzq = w / 2;
     jugador.ySupIzq = h / 2;
 
     for (let i = 0; i < 5; i++) {
-      enemigos.push(new Enemigo(generateRandom(800), 0, 20, 20, undefined, `rgb(${generateRandom(250)},${generateRandom(250)},${generateRandom(250)})`));
+      // eslint-disable-next-line no-undef
+      enemigos.push(new Enemigo(generateRandom(800), 0, 20, 20, undefined, `rgb(${generateRandom(250)},${generateRandom(250)},${generateRandom(250)})`, velocidadRandom()));
     }
   }
 
-  function moverEnemigos(e) {
+  function moverEnemigos() {
     mostrarElementos(true);
 
     for (let i = 0; i < enemigos.length; i++) {
@@ -206,51 +254,42 @@ function main() {
       }
 
       // COLICION CON JUGADOR
-      else if (enemigos[i].colisionarCon(jugador) || jugador.xSupIzq <= 0 || (jugador.xSupIzq+20) >= 800 || jugador.ySupIzq <= 0 || jugador.ySupIzq+20 >= 600) {
+      if (jugador.colisionarConX(enemigos[i]) || jugador.xSupIzq <= 0 || (jugador.xSupIzq+20) >= 800 || jugador.ySupIzq <= 0 || jugador.ySupIzq+20 >= 600) {
 
         jugador.setVidas = jugador.getVidas - 1;
 
         jugador.xSupIzq = generateRandom(798) + 1;
-        jugador.ySupIzq = generateRandom(598) + 1;
+        jugador.ySupIzq = generateRandom(598) + 1; 
 
         document.getElementById('contadorVidas').textContent = jugador.getVidas;
 
-        if (jugador.getVidas <= 0) {
+        switch (jugador.getVidas) {
+          case 0:
+            document.getElementById('contadorVidas').style.backgroundColor = 'red';
+            break;
+
+          case 1:
+            document.getElementById('contadorVidas').style.backgroundColor = '#F57328';
+            break;
+
+          case 2:
+            document.getElementById('contadorVidas').style.backgroundColor = '#FF9F29';
+            break;
+          
+          default:
+            break;
+        }
+
+
+        if (jugador.getVidas < 0) {
           jugar = false;
           mostrarElementos(false);
         }
       }
 
       // COLICION CON BALA
-      else if (enemigos[i].colisionarCon(bala)) {
-        switch (generateRandom(4)) {
-          case 1:
-            enemigos[i].ySupIzq = 0;
-            enemigos[i].xSupIzq = generateRandom(800);
-            enemigos[i].colorRelleno = `rgb(${generateRandom(250)},${generateRandom(250)},${generateRandom(250)})`;
-            break;
-
-          case 2:
-            enemigos[i].ySupIzq = generateRandom(600);
-            enemigos[i].xSupIzq = 800;
-            enemigos[i].colorRelleno = `rgb(${generateRandom(250)},${generateRandom(250)},${generateRandom(250)})`;
-            break;
-
-          case 3:
-            enemigos[i].ySupIzq = 600;
-            enemigos[i].xSupIzq = generateRandom(800);
-            enemigos[i].colorRelleno = `rgb(${generateRandom(250)},${generateRandom(250)},${generateRandom(250)})`;
-            break;
-
-          case 4:
-            enemigos[i].ySupIzq = generateRandom(600);
-            enemigos[i].xSupIzq = 0;
-            enemigos[i].colorRelleno = `rgb(${generateRandom(250)},${generateRandom(250)},${generateRandom(250)})`;
-            break;
-
-          default:
-            break;
-        }
+      else if (enemigos[i].colisionarCon(bala) && activo == false) {
+        reposicionarEnemigo(enemigos[i]);
       }
     }
     ctx.clearRect(0, 0, w, h);
@@ -272,7 +311,7 @@ function main() {
 
     jugador.setVidas = 3;
 
-    reposicionar();
+    reiniciar();
 
     setInterval(() => {
       // eslint-disable-next-line no-undef
@@ -282,29 +321,19 @@ function main() {
     contador = 0;
     document.getElementById('contador').textContent = contador;
     document.getElementById('contadorVidas').textContent = jugador.getVidas;
-
-    boton.hidden = true;
   }
 
+  //EVENTOS
   body.addEventListener('keydown', moverJugador);
   miCanvas.addEventListener('mousedown', activador);
   boton.addEventListener('click', iniciarJuego);
 
-  // GENERADOR DE ENEMIGOS
-  // eslint-disable-next-line no-plusplus
-  for (let i = 0; i < 5; i++) {
-    // eslint-disable-next-line no-undef
-    enemigos.push(new Enemigo(generateRandom(800), 0, 20, 20, undefined, `rgb(${generateRandom(250)},${generateRandom(250)},${generateRandom(250)})`));
-  }
-
+  //MUESTRA ELEMENTOS
   function mostrarElementos (value) {
-    document.getElementById('titleEnemigos').hidden =! value;
-    document.getElementById('contador').hidden =! value;
     boton.hidden = value;
     document.getElementById('gameover').hidden = value;
     document.getElementById('titleVidas').hidden =! value;
     document.getElementById('contadorVidas').hidden =! value;
-
   }
 }
 

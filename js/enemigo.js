@@ -1,3 +1,4 @@
+// eslint-disable-next-line no-unused-vars
 class Enemigo
 {
     #xSupIzq;
@@ -9,7 +10,7 @@ class Enemigo
     #vx;
     #vy;
 
-    constructor(xInicial, yInicial, anchoInicial, altoInicial, colorContorno, colorRelleno)
+    constructor(xInicial, yInicial, anchoInicial, altoInicial, colorContorno, colorRelleno, vx)
     {
         this.#xSupIzq = xInicial || 100;
         this.#ySupIzq = yInicial || 50;
@@ -17,8 +18,8 @@ class Enemigo
         this.#alto = altoInicial || 30;
         this.#colorContorno = colorContorno || "blue";
         this.#colorRelleno = colorRelleno || "green";
-        this.#vx = 3;
-        this.#vy = 2;
+        this.#vx = vx || 1;
+        this.#vy = vx || 1;
     }
 
     dibujar (ctx)
@@ -129,41 +130,41 @@ class Enemigo
 
     moverArriba ()
     {
-        this.#ySupIzq += - 1;
+        this.#ySupIzq += - this.#vx;
     }
 
     moverAbajo ()
     {
-        this.#ySupIzq += 1;
+        this.#ySupIzq += this.#vx;
     }
     
     moverIzquierda ()
     {
-        this.#xSupIzq += - 1;
+        this.#xSupIzq += - this.#vx;
     }
 
     moverDerecha ()
     {
-        this.#xSupIzq += 1;
+        this.#xSupIzq += this.#vx;
     }
 
-    moverAbajoIzquierda(){
-        this.#ySupIzq += 1;
-        this.#xSupIzq += - 1;
+    moverAbajoIzquierda() {
+        this.moverAbajo();
+        this.moverAbajoIzquierda();
     }
 
-    moverAbajoDercha(){
-        moverAbajo();
-        moverDerecha();
+    moverAbajoDercha() {
+        this.moverAbajo();
+        this.moverDerecha();
     }
 
-    moverArribaIzquierda(){
-        moverArriba();
-        moverIzquierda();
+    moverArribaIzquierda() {
+        this.moverArriba();
+        this.moverIzquierda();
     }
 
-    moverArribaDerecha(){
-        moverArriba();
-        moverDerecha();
+    moverArribaDerecha() {
+        this.moverArriba();
+        this.moverDerecha();
     }
 }

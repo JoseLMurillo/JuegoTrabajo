@@ -1,4 +1,4 @@
-/* eslint-disable block-spacing */
+// eslint-disable-next-line no-unused-vars
 class Jugador {
   #xSupIzq;
 
@@ -51,6 +51,21 @@ class Jugador {
     } else {
       respuesta = false;
     }
+    return respuesta;
+  }
+
+  colisionarConX(otroRectangulo) {
+    let respuesta;
+
+      if(this.#xSupIzq < Math.round(otroRectangulo.xSupIzq)+10 && 
+      (this.#xSupIzq+20) > Math.round(otroRectangulo.xSupIzq)+10 && 
+      this.#ySupIzq < Math.round(otroRectangulo.ySupIzq)+10 && 
+      (this.#ySupIzq+20) > Math.round(otroRectangulo.ySupIzq)+10) {
+      respuesta = true;
+     }else {
+      respuesta = false;
+    }
+    
     return respuesta;
   }
 
