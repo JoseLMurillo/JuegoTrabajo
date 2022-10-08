@@ -54,34 +54,14 @@ class Jugador {
     return respuesta;
   }
 
-  conectarCon(ctx, otroRectangulo) {
+  conectarCon(ctx, otroRectangulo, color) {
     ctx.beginPath();
-    ctx.moveTo(this.limiteIzq, this.limiteArriba);
-    ctx.lineTo(otroRectangulo.limiteDer, otroRectangulo.limiteArriba);
-    // ctx.strokeStyle = this.#colorContorno;
-    ctx.strokeStyle = "black";
-    ctx.stroke();
-    ctx.closePath();
 
     ctx.beginPath();
     ctx.moveTo(this.limiteDer, this.limiteArriba);
     ctx.lineTo(otroRectangulo.limiteIzq, otroRectangulo.limiteArriba);
     // ctx.strokeStyle = this.#colorContorno;
-    ctx.strokeStyle = "black";
-    ctx.stroke();
-    ctx.closePath();
-
-    ctx.beginPath();
-    ctx.moveTo(this.limiteIzq, this.limiteArriba);
-    ctx.lineTo(otroRectangulo.limiteIzq, otroRectangulo.limiteAbajo);
-    ctx.strokeStyle = this.#colorContorno;
-    ctx.stroke();
-    ctx.closePath();
-
-    ctx.beginPath();
-    ctx.moveTo(this.limiteIzq, this.limiteAbajo);
-    ctx.lineTo(otroRectangulo.limiteIzq, otroRectangulo.limiteArriba);
-    ctx.strokeStyle = this.#colorContorno;
+    ctx.strokeStyle = color;
     ctx.stroke();
     ctx.closePath();
   }
@@ -112,6 +92,10 @@ class Jugador {
 
   set setVidas(value) {
     this.#vidas = value;
+  }
+
+  get getVidas() {
+    return this.#vidas;
   }
 
   moverArriba() {

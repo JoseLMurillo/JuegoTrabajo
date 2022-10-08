@@ -1,40 +1,26 @@
-/* eslint-disable brace-style */
-/* Colicion entre enemigos
-coliciones proyectiles enemigos
-limites de mapa
-generacion procedural del mapa
-arreglar lado izquierdo proyectil */
-
 function main() {
   const miCanvas = document.getElementById('miCanvas');
   const body = document.getElementById('body');
   const boton = document.getElementById('enviar');
 
+  mostrarElementos(false);
+
+  //CANVAS
   const ctx = miCanvas.getContext('2d');
   const w = miCanvas.clientWidth;
   const h = miCanvas.clientHeight;
   let jugar = false;
   let contador = 0;
 
-  // eslint-disable-next-line no-undef
   const jugador = new Jugador(w / 2, h / 2, 20, 20, undefined, 'red');
 
-  // let enemigo = new Enemigo(w / 2 - 50, h / 2 - 50, 20, 20, undefined, 'blue');
+  const bala = new Proyectil((w / 2) + 20, h - 40, 20, 20);
 
-  // eslint-disable-next-line no-undef
-  const bala = new Proyectil((w / 2) + 20, h - 40, 20, 20, undefined, 'black');
-  // eslint-disable-next-line no-undef
   let enemigos = new Array([]);
-  // let enemigos = new Array();
-
-  jugador.dibujar(ctx);
-  bala.dibujar(ctx);
 
   // MOVER JUGADOR
   const map = {};
-
   function moverJugador(e) {
-    // eslint-disable-next-line no-multi-assign
     onkeydown = onkeyup = function (e) {
       map[e.key] = e.type === 'keydown';
 
@@ -79,9 +65,6 @@ function main() {
       default:
         break;
     }
-
-    ctx.clearRect(0, 0, w, h);
-    jugador.dibujar(ctx);
   }
 
   // NUMERO RANDOM
@@ -90,8 +73,9 @@ function main() {
     return aleatorio;
   }
 
+  //MOVIMIENTO BALA
   let activo = true;
-
+  
   function activador(e) {
     if (activo === true) {
       bala.xSupIzq = jugador.limiteDer;
@@ -99,62 +83,46 @@ function main() {
 
       const parar = setInterval(() => {
         activo = false;
-        ctx.clearRect(0, 0, w, h);
-
-        // eslint-disable-next-line no-plusplus
+       
         for (let i = 0; i < enemigos.length; i++) {
-          // SOLO DERECHA
-          if ((e.clientX - 26) > bala.xSupIzq && e.clientY == bala.ySupIzq) {
+          bala.colorRelleno = 'black';
+          if(bala.xSupIzq < (e.clientX - 20)) {
             bala.moverDerecha();
           }
 
-          // SOLO IZQUIERDA
-          else if ((e.clientX - 26) < bala.xSupIzq && (e.clientY - 18) == bala.ySupIzq) {
-            bala.moverIzquierda();
-          }
-
-          // SOLO ARRIBA
-          else if ((e.clientY - 18) < bala.ySupIzq && ((e.clientX - 26) == bala.xSupIzq)) {
+          if(bala.ySupIzq > (e.clientY - 20)) {
             bala.moverArriba();
           }
 
-          // SOLO ABAJO
-          else if ((e.clientX - 26) == bala.xSupIzq && (e.clientY - 18) > bala.ySupIzq) {
+          if(bala.ySupIzq < (e.clientY - 20)) {
             bala.moverAbajo();
           }
 
-          // ARRIBA DERECHA
-          else if ((e.clientX - 26) > bala.xSupIzq && (e.clientY - 18) < bala.ySupIzq) {
-            bala.moverDerecha();
-            bala.moverArriba();
+          if(bala.xSupIzq > (e.clientX - 20)) {
+            bala.moverAbajoIzquierda();
           }
 
-          // ABAJO DERECHA
-          else if ((e.clientX - 26) > bala.xSupIzq && (e.clientY - 18) > bala.ySupIzq) {
-            bala.moverDerecha();
-            bala.moverAbajo();
+          if((e.clientX - 20) > bala.xSupIzq && (e.clientY - 20) < bala.ySupIzq) {
+            bala.moverArribaDerecha();
           }
 
-          // ABAJO IZQUIERDA
-          else if ((e.clientX - 26) < bala.xSupIzq && (e.clientY - 18) > bala.ySupIzq) {
-            bala.moverIzquierda();
-            bala.moverAbajo();
+          if((e.clientX - 20) > bala.xSupIzq && (e.clientY - 20) > bala.ySupIzq) {
+            bala.moverAbajoDerecha();
           }
 
-          // ARRIBA IZQUIERDA
-          else if ((e.clientX - 26) < bala.xSupIzq && (e.clientY - 18) < bala.ySupIzq) {
-            bala.moverArriba();
-            bala.moverIzquierda();
+          if((e.clientX - 20) < bala.xSupIzq && (e.clientY - 20) > bala.ySupIzq) {
+            bala.moverAbajoIzquierda();
+          }
+
+          if((e.clientX - 20) < bala.xSupIzq && (e.clientY - 20) < bala.ySupIzq) {
+            bala.moverArribaIzquierda();
           }
 
           // FINALIZAR ANIMACION
-          if ((e.clientY - 18) == bala.ySupIzq && (e.clientX - 26) == bala.xSupIzq) {
+          if ((e.clientY - 20) == bala.ySupIzq && (e.clientX - 20) == bala.xSupIzq) {
             clearInterval(parar);
-
-            /* bala.xSupIzq = jugador.limiteDer;
-            bala.ySupIzq = jugador.limiteArriba - 20; */
-
             activo = true;
+            bala.colorRelleno = 'rgba(255, 255, 255, 0)';
           }
 
           // COLICION CON ENEMIGO
@@ -173,83 +141,84 @@ function main() {
         setTimeout(() => {
           clearInterval(parar);
           activo = true;
-        }, 4000);
+          bala.colorRelleno = 'rgba(255, 255, 255, 0)';
+        }, 3500);
       }, 10);
     }
   }
 
   function reposicionar() {
     enemigos = [];
+    jugador.xSupIzq = w / 2;
+    jugador.ySupIzq = h / 2;
 
-    // eslint-disable-next-line no-plusplus
     for (let i = 0; i < 5; i++) {
-      // eslint-disable-next-line no-undef
       enemigos.push(new Enemigo(generateRandom(800), 0, 20, 20, undefined, `rgb(${generateRandom(250)},${generateRandom(250)},${generateRandom(250)})`));
     }
   }
 
   function moverEnemigos(e) {
-    ctx.clearRect(0, 0, w, h);
+    mostrarElementos(true);
 
-    // eslint-disable-next-line no-plusplus
     for (let i = 0; i < enemigos.length; i++) {
       // SOLO BAJANDO
-      // eslint-disable-next-line max-len
       if (enemigos[i].limiteAbajo < jugador.limiteAbajo && enemigos[i].limiteIzq === jugador.limiteIzq && enemigos[i].limiteDer === jugador.limiteDer) {
         enemigos[i].moverAbajo();
       }
 
       // SOLO ARRIBA
-      // eslint-disable-next-line max-len
       else if (enemigos[i].limiteArriba > jugador.limiteArriba && enemigos[i].limiteIzq === jugador.limiteIzq && enemigos[i].limiteDer === jugador.limiteDer) {
         enemigos[i].moverArriba();
       }
 
       // SOLO IZQUIERDA
-      // eslint-disable-next-line max-len
       else if (enemigos[i].limiteIzq > jugador.limiteIzq && enemigos[i].limiteAbajo === jugador.limiteAbajo && enemigos[i].limiteArriba === jugador.limiteArriba) {
         enemigos[i].moverIzquierda();
       }
 
       // SOLO DERECHO
-      // eslint-disable-next-line max-len
       else if (enemigos[i].limiteDer < jugador.limiteDer && enemigos[i].limiteAbajo === jugador.limiteAbajo && enemigos[i].limiteArriba === jugador.limiteArriba) {
         enemigos[i].moverDerecha();
       }
 
       // BAJANDO A LA IZQUIERDA
-      // eslint-disable-next-line max-len
       else if (enemigos[i].limiteAbajo < jugador.limiteAbajo && enemigos[i].limiteIzq > jugador.limiteIzq) {
         enemigos[i].moverAbajo();
         enemigos[i].moverIzquierda();
       }
 
       // BAJANDO A LA DERECHA
-      // eslint-disable-next-line max-len
       if (enemigos[i].limiteAbajo < jugador.limiteAbajo && enemigos[i].limiteDer < jugador.limiteDer) {
         enemigos[i].moverAbajo();
         enemigos[i].moverDerecha();
       }
 
       // ARRIBA IZQUIERDA
-      // eslint-disable-next-line max-len
       else if (enemigos[i].limiteArriba > jugador.limiteArriba && enemigos[i].limiteIzq > jugador.limiteIzq) {
         enemigos[i].moverArriba();
         enemigos[i].moverIzquierda();
       }
 
       // ARRIBA DERECHA
-      // eslint-disable-next-line max-len
       else if (enemigos[i].limiteArriba > jugador.limiteArriba && enemigos[i].limiteDer < jugador.limiteDer) {
         enemigos[i].moverArriba();
         enemigos[i].moverDerecha();
       }
 
       // COLICION CON JUGADOR
-      else if (enemigos[i].colisionarCon(jugador)) {
-        jugar = false;
+      else if (enemigos[i].colisionarCon(jugador) || jugador.xSupIzq <= 0 || (jugador.xSupIzq+20) >= 800 || jugador.ySupIzq <= 0 || jugador.ySupIzq+20 >= 600) {
 
-        document.getElementById('gameover').hidden = false;
+        jugador.setVidas = jugador.getVidas - 1;
+
+        jugador.xSupIzq = generateRandom(798) + 1;
+        jugador.ySupIzq = generateRandom(598) + 1;
+
+        document.getElementById('contadorVidas').textContent = jugador.getVidas;
+
+        if (jugador.getVidas <= 0) {
+          jugar = false;
+          mostrarElementos(false);
+        }
       }
 
       // COLICION CON BALA
@@ -284,8 +253,7 @@ function main() {
         }
       }
     }
-
-    // eslint-disable-next-line no-plusplus
+    ctx.clearRect(0, 0, w, h);
     for (let i = 0; i < enemigos.length; i++) {
       enemigos[i].dibujar(ctx);
       jugador.dibujar(ctx);
@@ -302,6 +270,8 @@ function main() {
     window.requestAnimationFrame(moverEnemigos);
     document.getElementById('gameover').hidden = true;
 
+    jugador.setVidas = 3;
+
     reposicionar();
 
     setInterval(() => {
@@ -310,6 +280,10 @@ function main() {
     }, 10000);
 
     contador = 0;
+    document.getElementById('contador').textContent = contador;
+    document.getElementById('contadorVidas').textContent = jugador.getVidas;
+
+    boton.hidden = true;
   }
 
   body.addEventListener('keydown', moverJugador);
@@ -321,6 +295,16 @@ function main() {
   for (let i = 0; i < 5; i++) {
     // eslint-disable-next-line no-undef
     enemigos.push(new Enemigo(generateRandom(800), 0, 20, 20, undefined, `rgb(${generateRandom(250)},${generateRandom(250)},${generateRandom(250)})`));
+  }
+
+  function mostrarElementos (value) {
+    document.getElementById('titleEnemigos').hidden =! value;
+    document.getElementById('contador').hidden =! value;
+    boton.hidden = value;
+    document.getElementById('gameover').hidden = value;
+    document.getElementById('titleVidas').hidden =! value;
+    document.getElementById('contadorVidas').hidden =! value;
+
   }
 }
 

@@ -13,8 +13,8 @@ class Proyectil
         this.#ySupIzq = yInicial || 50;
         this.#ancho = anchoInicial || 50;
         this.#alto = altoInicial || 30;
-        this.#colorContorno = colorContorno || "blue";
-        this.#colorRelleno = colorRelleno || "green";
+        this.#colorContorno = colorContorno || 'rgba(255, 255, 255, 0)';
+        this.#colorRelleno = colorRelleno || 'black';
     }
 
     dibujar (ctx)
@@ -125,22 +125,22 @@ class Proyectil
     }
 
     moverAbajoIzquierda(){
-        this.#ySupIzq += 1;
-        this.#xSupIzq += - 1;
+        this.moverAbajo();
+        this.moverIzquierda();
     }
 
-    moverAbajoDercha(){
-        moverAbajo();
-        moverDerecha();
+    moverAbajoDerecha(){
+        this.moverAbajo();
+        this.moverDerecha();
     }
 
     moverArribaIzquierda(){
-        moverArriba();
-        moverIzquierda();
+        this.moverArriba();
+        this.moverIzquierda();
     }
 
     moverArribaDerecha(){
-        moverArriba();
-        moverDerecha();
+        this.moverArriba();
+        this.moverDerecha();
     }
 }
