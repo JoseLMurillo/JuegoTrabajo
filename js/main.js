@@ -1,5 +1,6 @@
 function main() {
   /* 
+  
   const body = document.getElementById('body');
   
   // MOVER JUGADOR
