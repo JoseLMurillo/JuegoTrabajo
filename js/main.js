@@ -1,136 +1,13 @@
 function main() {
-  /* 
   
   const body = document.getElementById('body');
   
-  // MOVER JUGADOR
-  const map = {};
-  function moverJugador(e) {
-    onkeydown = onkeyup = function (e) {
-      map[e.key] = e.type === 'keydown';
-
-      if ((map["a"] && map["w"]) || (map["w"] && map["a"])) {
-        jugador.moverArriba();
-        jugador.moverIzquierda();
-      }
-
-      if ((map['a'] && map['s']) || (map['s'] && map['a'])) {
-        jugador.moverAbajo();
-        jugador.moverIzquierda();
-      }
-
-      if ((map['d'] && map['w']) || (map['w'] && map['d'])) {
-        jugador.moverArriba();
-        jugador.moverDerecha();
-      }
-
-      if ((map['d'] && map['s']) || (map['s'] && map['d'])) {
-        jugador.moverAbajo();
-        jugador.moverDerecha();
-      }
-    };
-
-    switch (e.key) {
-      case 'w':
-        jugador.moverArriba();
-        break;
-
-      case 's':
-        jugador.moverAbajo();
-        break;
-
-      case 'a':
-        jugador.moverIzquierda();
-        break;
-
-      case 'd':
-        jugador.moverDerecha();
-        break;
-
-      default:
-        break;
-    }
-
-    if(activo == true) {
-      bala.xSupIzq = jugador.xSupIzq+20;
-      bala.ySupIzq = jugador.ySupIzq-20;
-    }
-  }
-
-  //MOVIMIENTO BALA
   
-  
-  function activador(e) {
-    if (activo === true) {
-
-      const parar = setInterval(() => {
-        activo = false;
-       
-        for (let i = 0; i < enemigos.length; i++) {
-          if(bala.xSupIzq < (e.clientX - 20)) {
-            bala.moverDerecha();
-          }
-
-          if(bala.ySupIzq > (e.clientY - 20)) {
-            bala.moverArriba();
-          }
-
-          if(bala.ySupIzq < (e.clientY - 20)) {
-            bala.moverAbajo();
-          }
-
-          if(bala.xSupIzq > (e.clientX - 20)) {
-            bala.moverAbajoIzquierda();
-          }
-
-          if((e.clientX - 20) > bala.xSupIzq && (e.clientY - 20) < bala.ySupIzq) {
-            bala.moverArribaDerecha();
-          }
-
-          if((e.clientX - 20) > bala.xSupIzq && (e.clientY - 20) > bala.ySupIzq) {
-            bala.moverAbajoDerecha();
-          }
-
-          if((e.clientX - 20) < bala.xSupIzq && (e.clientY - 20) > bala.ySupIzq) {
-            bala.moverAbajoIzquierda();
-          }
-
-          if((e.clientX - 20) < bala.xSupIzq && (e.clientY - 20) < bala.ySupIzq) {
-            bala.moverArribaIzquierda();
-          }
-
-          // FINALIZAR ANIMACION
-          if ((e.clientY - 20) == bala.ySupIzq && (e.clientX - 20) == bala.xSupIzq) {
-            clearInterval(parar);
-            activo = true;
-          }
-
-          // COLICION CON ENEMIGO
-          if (enemigos[i].colisionarCon(bala)) {
-            enemigos[i].ySupIzq = 0;
-            enemigos[i].xSupIzq = generateRandom(800);
-
-            enemigos[i].colorRelleno = `rgb(${generateRandom(250)},${generateRandom(250)},${generateRandom(250)})`;
-
-            contador += 1;
-            document.getElementById('contador').textContent = contador;
-          }
-        }
-
-        setTimeout(() => {
-          clearInterval(parar);
-          activo = true;
-        }, 3500);
-      }, 10);
-    }
-  }
 
   //EVENTOS
   body.addEventListener('keydown', moverJugador);
   miCanvas.addEventListener('mousedown', activador);
   
-
-  */
   //CANVAS
   const miCanvas = document.getElementById('miCanvas');
   const ctx = miCanvas.getContext('2d');
@@ -147,7 +24,7 @@ function main() {
   const tituloOver = document.getElementById('gameover');
   
   // eslint-disable-next-line no-undef
-  const jugador = new Jugador(w / 2, h / 2, 20, 20, undefined, 'red');
+  const jugador = new Jugador(w / 2, h / 2, 20, 20, undefined, 'blue');
   // eslint-disable-next-line no-undef
   const bala = new Proyectil((w / 2) + 20, (h / 2) - 20, 20, 20);
 
@@ -185,33 +62,147 @@ function main() {
       case 1:
         enemigo.ySupIzq = 0;
         enemigo.xSupIzq = generateRandom(800);
-        enemigo.colorRelleno = `rgb(${generateRandom(250)},${generateRandom(250)},${generateRandom(250)})`;
         console.log('arriba');
         break;
 
       case 2:
         enemigo.ySupIzq = generateRandom(600);
         enemigo.xSupIzq = 800;
-        enemigo.colorRelleno = `rgb(${generateRandom(250)},${generateRandom(250)},${generateRandom(250)})`;
         break;
 
       case 3:
         enemigo.ySupIzq = 600;
         enemigo.xSupIzq = generateRandom(800);
-        enemigo.colorRelleno = `rgb(${generateRandom(250)},${generateRandom(250)},${generateRandom(250)})`;
-
         break;
 
       case 4:
         enemigo.ySupIzq = generateRandom(600);
         enemigo.xSupIzq = 0;
-        enemigo.colorRelleno = `rgb(${generateRandom(250)},${generateRandom(250)},${generateRandom(250)})`;
         break;
 
       default:
         break;
     }
   }
+
+// MOVER JUGADOR
+const map = {};
+function moverJugador(e) {
+  onkeydown = onkeyup = function (e) {
+    map[e.key] = e.type === 'keydown';
+
+    if ((map["a"] && map["w"]) || (map["w"] && map["a"])) {
+      jugador.moverArriba();
+      jugador.moverIzquierda();
+    }
+
+    if ((map['a'] && map['s']) || (map['s'] && map['a'])) {
+      jugador.moverAbajo();
+      jugador.moverIzquierda();
+    }
+
+    if ((map['d'] && map['w']) || (map['w'] && map['d'])) {
+      jugador.moverArriba();
+      jugador.moverDerecha();
+    }
+
+    if ((map['d'] && map['s']) || (map['s'] && map['d'])) {
+      jugador.moverAbajo();
+      jugador.moverDerecha();
+    }
+  };
+
+  switch (e.key) {
+    case 'w':
+      jugador.moverArriba();
+      break;
+
+    case 's':
+      jugador.moverAbajo();
+      break;
+
+    case 'a':
+      jugador.moverIzquierda();
+      break;
+
+    case 'd':
+      jugador.moverDerecha();
+      break;
+
+    default:
+      break;
+  }
+
+  if(activo == true) {
+    bala.xSupIzq = jugador.xSupIzq+20;
+    bala.ySupIzq = jugador.ySupIzq-20;
+  }
+}
+
+//MOVIMIENTO BALA
+
+
+function activador(e) {
+  if (activo === true) {
+
+    const parar = setInterval(() => {
+      activo = false;
+     
+      for (let i = 0; i < enemigos.length; i++) {
+        if(bala.xSupIzq < (e.clientX - 20)) {
+          bala.moverDerecha();
+        }
+
+        if(bala.ySupIzq > (e.clientY - 20)) {
+          bala.moverArriba();
+        }
+
+        if(bala.ySupIzq < (e.clientY - 20)) {
+          bala.moverAbajo();
+        }
+
+        if(bala.xSupIzq > (e.clientX - 20)) {
+          bala.moverAbajoIzquierda();
+        }
+
+        if((e.clientX - 20) > bala.xSupIzq && (e.clientY - 20) < bala.ySupIzq) {
+          bala.moverArribaDerecha();
+        }
+
+        if((e.clientX - 20) > bala.xSupIzq && (e.clientY - 20) > bala.ySupIzq) {
+          bala.moverAbajoDerecha();
+        }
+
+        if((e.clientX - 20) < bala.xSupIzq && (e.clientY - 20) > bala.ySupIzq) {
+          bala.moverAbajoIzquierda();
+        }
+
+        if((e.clientX - 20) < bala.xSupIzq && (e.clientY - 20) < bala.ySupIzq) {
+          bala.moverArribaIzquierda();
+        }
+
+        // FINALIZAR ANIMACION
+        if ((e.clientY - 20) == bala.ySupIzq && (e.clientX - 20) == bala.xSupIzq) {
+          clearInterval(parar);
+          activo = true;
+        }
+
+        // COLICION CON ENEMIGO
+        if (enemigos[i].colisionarCon(bala)) {
+          enemigos[i].ySupIzq = 0;
+          enemigos[i].xSupIzq = generateRandom(800);
+          contador += 1;
+          document.getElementById('contador').textContent = contador;
+        }
+      }
+
+      setTimeout(() => {
+        clearInterval(parar);
+        activo = true;
+      }, 3500);
+    }, 10);
+  }
+}
 
   //MOVER ENEMIGOS
   function moverEnemigos() {
@@ -285,8 +276,8 @@ function main() {
             break;
           
           default:
+            document.getElementById('contadorVidas').style.backgroundColor = 'green';
             break;
-            
         }
 
       if (jugador.getVidas < 0) {
