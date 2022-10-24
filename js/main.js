@@ -1,34 +1,33 @@
 function main() {
-  
-  const body = document.getElementById('body');
-  
-  
 
-  //EVENTOS
-  body.addEventListener('keydown', moverJugador);
-  miCanvas.addEventListener('mousedown', activador);
-  
+  const body = document.getElementById('body');
+
   //CANVAS
   const miCanvas = document.getElementById('miCanvas');
   const ctx = miCanvas.getContext('2d');
   const w = miCanvas.clientWidth;
   const h = miCanvas.clientHeight;
-  
+
   let activo = true;
   let jugar = false;
   let contador = 0;
 
   let enemigos = new Array([]);
-  
+
   const boton = document.getElementById('enviar');
   const tituloOver = document.getElementById('gameover');
-  
+
   // eslint-disable-next-line no-undef
   const jugador = new Jugador(w / 2, h / 2, 20, 20, undefined, 'blue');
   // eslint-disable-next-line no-undef
   const bala = new Proyectil((w / 2) + 20, (h / 2) - 20, 20, 20);
 
+  //EVENTOS
+  body.addEventListener('keydown', moverJugador);
+  miCanvas.addEventListener('mousedown', activador);
+
   mostrarElementos(false);
+
 
   // NUMERO RANDOM
   function generateRandom(max) {
@@ -38,10 +37,10 @@ function main() {
 
   //VELOCIDAD DE LOS ENEMIGOS ALEATORIA
   function velocidadRandom() {
-    let numero = Math.random()*(1.5 - 0.5)+0.5;
+    let numero = Math.random() * (1.5 - 0.5) + 0.5;
     return numero;
   }
-  
+
   //REINCIA EL JUEGO
   function reiniciar() {
     enemigos = [];
@@ -51,7 +50,7 @@ function main() {
     for (let i = 0; i < 5; i++) {
       // eslint-disable-next-line no-undef
       enemigos.push(new Enemigo(generateRandom(800), 0, 20, 20, undefined, 'red', velocidadRandom()));
-    } 
+    }
   }
 
   //REPOSICIONA ENEMIGOS AL REDEDOR
@@ -62,7 +61,6 @@ function main() {
       case 1:
         enemigo.ySupIzq = 0;
         enemigo.xSupIzq = generateRandom(800);
-        console.log('arriba');
         break;
 
       case 2:
@@ -85,124 +83,126 @@ function main() {
     }
   }
 
-// MOVER JUGADOR
-const map = {};
-function moverJugador(e) {
-  onkeydown = onkeyup = function (e) {
-    map[e.key] = e.type === 'keydown';
+  // MOVER JUGADOR
+  const map = {};
 
-    if ((map["a"] && map["w"]) || (map["w"] && map["a"])) {
-      jugador.moverArriba();
-      jugador.moverIzquierda();
+  function moverJugador(e) {
+    if (activo) {
+      onkeydown = onkeyup = function (e) {
+        map[e.key] = e.type === 'keydown';
+
+        if ((map["a"] && map["w"]) || (map["w"] && map["a"])) {
+          jugador.moverArriba();
+          jugador.moverIzquierda();
+        }
+
+        if ((map['a'] && map['s']) || (map['s'] && map['a'])) {
+          jugador.moverAbajo();
+          jugador.moverIzquierda();
+        }
+
+        if ((map['d'] && map['w']) || (map['w'] && map['d'])) {
+          jugador.moverArriba();
+          jugador.moverDerecha();
+        }
+
+        if ((map['d'] && map['s']) || (map['s'] && map['d'])) {
+          jugador.moverAbajo();
+          jugador.moverDerecha();
+        }
+      };
+
+      switch (e.key) {
+        case 'w':
+          jugador.moverArriba();
+          break;
+
+        case 's':
+          jugador.moverAbajo();
+          break;
+
+        case 'a':
+          jugador.moverIzquierda();
+          break;
+
+        case 'd':
+          jugador.moverDerecha();
+          break;
+
+        default:
+          break;
+      }
+    }
+    if (activo == true) {
+      bala.xSupIzq = jugador.xSupIzq + 20;
+      bala.ySupIzq = jugador.ySupIzq - 20;
     }
 
-    if ((map['a'] && map['s']) || (map['s'] && map['a'])) {
-      jugador.moverAbajo();
-      jugador.moverIzquierda();
-    }
-
-    if ((map['d'] && map['w']) || (map['w'] && map['d'])) {
-      jugador.moverArriba();
-      jugador.moverDerecha();
-    }
-
-    if ((map['d'] && map['s']) || (map['s'] && map['d'])) {
-      jugador.moverAbajo();
-      jugador.moverDerecha();
-    }
-  };
-
-  switch (e.key) {
-    case 'w':
-      jugador.moverArriba();
-      break;
-
-    case 's':
-      jugador.moverAbajo();
-      break;
-
-    case 'a':
-      jugador.moverIzquierda();
-      break;
-
-    case 'd':
-      jugador.moverDerecha();
-      break;
-
-    default:
-      break;
   }
 
-  if(activo == true) {
-    bala.xSupIzq = jugador.xSupIzq+20;
-    bala.ySupIzq = jugador.ySupIzq-20;
-  }
-}
-
-//MOVIMIENTO BALA
+  //MOVIMIENTO BALA
 
 
-function activador(e) {
-  if (activo === true) {
+  function activador(e) {
+    if (activo === true) {
 
-    const parar = setInterval(() => {
-      activo = false;
-     
-      for (let i = 0; i < enemigos.length; i++) {
-        if(bala.xSupIzq < (e.clientX - 20)) {
-          bala.moverDerecha();
+      const parar = setInterval(() => {
+        activo = false;
+
+        for (let i = 0; i < enemigos.length; i++) {
+          if (bala.xSupIzq < (e.clientX - 20)) {
+            bala.moverDerecha();
+          }
+
+          if (bala.ySupIzq > (e.clientY - 20)) {
+            bala.moverArriba();
+          }
+
+          if (bala.ySupIzq < (e.clientY - 20)) {
+            bala.moverAbajo();
+          }
+
+          if (bala.xSupIzq > (e.clientX - 20)) {
+            bala.moverAbajoIzquierda();
+          }
+
+          if ((e.clientX - 20) > bala.xSupIzq && (e.clientY - 20) < bala.ySupIzq) {
+            bala.moverArribaDerecha();
+          }
+
+          if ((e.clientX - 20) > bala.xSupIzq && (e.clientY - 20) > bala.ySupIzq) {
+            bala.moverAbajoDerecha();
+          }
+
+          if ((e.clientX - 20) < bala.xSupIzq && (e.clientY - 20) > bala.ySupIzq) {
+            bala.moverAbajoIzquierda();
+          }
+
+          if ((e.clientX - 20) < bala.xSupIzq && (e.clientY - 20) < bala.ySupIzq) {
+            bala.moverArribaIzquierda();
+          }
+
+          // FINALIZAR ANIMACION
+          if ((e.clientY - 20) == bala.ySupIzq && (e.clientX - 20) == bala.xSupIzq) {
+            clearInterval(parar);
+            activo = true;
+          }
+
+          // COLICION CON ENEMIGO
+          if (enemigos[i].colisionarCon(bala)) {
+            reposicionarEnemigo(enemigos[i]);
+            contador += 1;
+            document.getElementById('contador').textContent = contador;
+          }
         }
 
-        if(bala.ySupIzq > (e.clientY - 20)) {
-          bala.moverArriba();
-        }
-
-        if(bala.ySupIzq < (e.clientY - 20)) {
-          bala.moverAbajo();
-        }
-
-        if(bala.xSupIzq > (e.clientX - 20)) {
-          bala.moverAbajoIzquierda();
-        }
-
-        if((e.clientX - 20) > bala.xSupIzq && (e.clientY - 20) < bala.ySupIzq) {
-          bala.moverArribaDerecha();
-        }
-
-        if((e.clientX - 20) > bala.xSupIzq && (e.clientY - 20) > bala.ySupIzq) {
-          bala.moverAbajoDerecha();
-        }
-
-        if((e.clientX - 20) < bala.xSupIzq && (e.clientY - 20) > bala.ySupIzq) {
-          bala.moverAbajoIzquierda();
-        }
-
-        if((e.clientX - 20) < bala.xSupIzq && (e.clientY - 20) < bala.ySupIzq) {
-          bala.moverArribaIzquierda();
-        }
-
-        // FINALIZAR ANIMACION
-        if ((e.clientY - 20) == bala.ySupIzq && (e.clientX - 20) == bala.xSupIzq) {
+        setTimeout(() => {
           clearInterval(parar);
           activo = true;
-        }
-
-        // COLICION CON ENEMIGO
-        if (enemigos[i].colisionarCon(bala)) {
-          enemigos[i].ySupIzq = 0;
-          enemigos[i].xSupIzq = generateRandom(800);
-          contador += 1;
-          document.getElementById('contador').textContent = contador;
-        }
-      }
-
-      setTimeout(() => {
-        clearInterval(parar);
-        activo = true;
-      }, 3500);
-    }, 10);
+        }, 3500);
+      }, 10);
+    }
   }
-}
 
   //MOVER ENEMIGOS
   function moverEnemigos() {
@@ -253,12 +253,12 @@ function activador(e) {
       }
 
       // COLICION CON JUGADOR
-      if (jugador.colisionarConX(enemigos[i]) || jugador.xSupIzq <= 0 || (jugador.xSupIzq+20) >= 800 || jugador.ySupIzq <= 0 || jugador.ySupIzq+20 >= 600) {
+      if (jugador.colisionarConX(enemigos[i]) || jugador.xSupIzq <= 0 || (jugador.xSupIzq + 20) >= 800 || jugador.ySupIzq <= 0 || jugador.ySupIzq + 20 >= 600) {
 
         jugador.setVidas = jugador.getVidas - 1;
 
         jugador.xSupIzq = generateRandom(798) + 1;
-        jugador.ySupIzq = generateRandom(598) + 1; 
+        jugador.ySupIzq = generateRandom(598) + 1;
 
         document.getElementById('contadorVidas').textContent = jugador.getVidas;
 
@@ -274,13 +274,13 @@ function activador(e) {
           case 2:
             document.getElementById('contadorVidas').style.backgroundColor = '#FF9F29';
             break;
-          
+
           default:
             document.getElementById('contadorVidas').style.backgroundColor = 'green';
             break;
         }
 
-      if (jugador.getVidas < 0) {
+        if (jugador.getVidas < 0) {
           jugar = false;
           mostrarElementos(false);
         }
@@ -315,23 +315,23 @@ function activador(e) {
     //AÑADE UN ENEMIGO MAS CADA 9s
     setInterval(() => {
       // eslint-disable-next-line no-undef
-      enemigos.push(new Enemigo(generateRandom(800), 0, 20, 20, undefined, `rgb(${generateRandom(250)},${generateRandom(250)},${generateRandom(250)})`));
+      enemigos.push(new Enemigo(generateRandom(800), 0, 20, 20, undefined, 'red'));
     }, 9000);
 
     document.getElementById('contador').textContent = contador;
-    document.getElementById('contadorVidas').textContent = jugador.getVidas; 
+    document.getElementById('contadorVidas').textContent = jugador.getVidas;
   }
 
   //MUESTRA ELEMENTOS
-  function mostrarElementos (value) {
+  function mostrarElementos(value) {
     boton.hidden = value;
     document.getElementById('gameover').hidden = value;
-    document.getElementById('titleVidas').hidden =! value;
-    document.getElementById('contadorVidas').hidden =! value;
+    document.getElementById('titleVidas').hidden = !value;
+    document.getElementById('contadorVidas').hidden = !value;
   }
 
   boton.addEventListener('click', iniciarJuego);
 
-} 
+}
 
 window.addEventListener('load', main);
