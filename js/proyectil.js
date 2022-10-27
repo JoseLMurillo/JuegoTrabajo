@@ -15,7 +15,7 @@ class Proyectil
         this.#ancho = anchoInicial || 50;
         this.#alto = altoInicial || 30;
         this.#colorContorno = colorContorno || 'rgba(255, 255, 255, 0)';
-        this.#colorRelleno = colorRelleno || 'black';
+        this.#colorRelleno = colorRelleno || 'gold';
     }
 
     dibujar (ctx)

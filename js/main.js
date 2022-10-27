@@ -1,6 +1,10 @@
 /*Parte visual, Sprites, background, mandar a las clases lo que se pueda enviar a las clases*/
 
 //COMO PUEDO MEJORAR LA RESPUESTA DE LOS CONTROLES
+//MANDAR A LOS METODOS LO QUE SE PUEDA COLOCAR EN LOS METODOS
+//AGREGAR SPRITES
+  //EMENIGOS, JUGADOR, PROYECTIL
+//AGREGAR FONDOS
 
 function main() {
 
@@ -33,17 +37,16 @@ function main() {
 
   mostrarElementos(false);
 
-
-  // NUMERO RANDOM
-  function generateRandom(max) {
-    const aleatorio = Math.floor(Math.random() * max);
+  //ESTO PODRIA SER UN METODO Y LO LLAMO
+  function generateRandomNumber(condition, max){
+    let aleatorio;
+    if(condition == 0) {
+      aleatorio = Math.floor(Math.random() * max);
+    }
+    else {
+      aleatorio = Math.random() * (1.5 - 0.5) + 0.5;
+    }
     return aleatorio;
-  }
-
-  //VELOCIDAD DE LOS ENEMIGOS ALEATORIA
-  function velocidadRandom() {
-    let numero = Math.random() * (1.5 - 0.5) + 0.5;
-    return numero;
   }
 
   //REINCIA EL JUEGO
@@ -54,32 +57,32 @@ function main() {
 
     for (let i = 0; i < 5; i++) {
       // eslint-disable-next-line no-undef
-      enemigos.push(new Enemigo(generateRandom(800), 0, 20, 20, undefined, 'red', velocidadRandom()));
+      enemigos.push(new Enemigo(generateRandomNumber(0,800), 0, 20, 20, undefined, 'red', generateRandomNumber(1,0)));
     }
   }
 
   //REPOSICIONA ENEMIGOS AL REDEDOR
   function reposicionarEnemigo(enemigo) {
-    enemigo.vx = velocidadRandom();
+    enemigo.vx = generateRandomNumber(1,0);
 
-    switch (generateRandom(4)) {
+    switch (generateRandomNumber(0,4)) {
       case 1:
         enemigo.ySupIzq = 0;
-        enemigo.xSupIzq = generateRandom(800);
+        enemigo.xSupIzq = generateRandomNumber(0,800);
         break;
 
       case 2:
-        enemigo.ySupIzq = generateRandom(600);
+        enemigo.ySupIzq = generateRandomNumber(0,600);
         enemigo.xSupIzq = 800;
         break;
 
       case 3:
         enemigo.ySupIzq = 600;
-        enemigo.xSupIzq = generateRandom(800);
+        enemigo.xSupIzq = generateRandomNumber(0,800);
         break;
 
       case 4:
-        enemigo.ySupIzq = generateRandom(600);
+        enemigo.ySupIzq = generateRandomNumber(0,600);
         enemigo.xSupIzq = 0;
         break;
 
@@ -88,13 +91,14 @@ function main() {
     }
   }
 
+  //QUIERO MEJORAR EL MOVIMIENTO DEL JUGADOR
   // MOVER JUGADOR
   const map = {};
 
   function moverJugador(e) {
     if (activo) {
       onkeydown = onkeyup = function (e) {
-        map[e.key] = e.type === 'keydown';
+        map[e.key] = e.type == 'keydown';
 
         if ((map["a"] && map["w"]) || (map["w"] && map["a"])) {
           jugador.moverArriba();
@@ -142,12 +146,9 @@ function main() {
       bala.xSupIzq = jugador.xSupIzq + 20;
       bala.ySupIzq = jugador.ySupIzq - 20;
     }
-
   }
 
   //MOVIMIENTO BALA
-
-
   function activador(e) {
     if (activo === true) {
 
@@ -204,7 +205,7 @@ function main() {
         setTimeout(() => {
           clearInterval(parar);
           activo = true;
-        }, 3500);
+        }, 2500);
       }, 10);
     }
   }
@@ -262,8 +263,8 @@ function main() {
 
         jugador.setVidas = jugador.getVidas - 1;
 
-        jugador.xSupIzq = generateRandom(798) + 1;
-        jugador.ySupIzq = generateRandom(598) + 1;
+        jugador.xSupIzq = generateRandomNumber(0,798) + 1;
+        jugador.ySupIzq = generateRandomNumber(0,598) + 1;
 
         document.getElementById('contadorVidas').textContent = jugador.getVidas;
 
@@ -288,6 +289,7 @@ function main() {
         if (jugador.getVidas < 0) {
           jugar = false;
           mostrarElementos(false);
+          document.getElementById('miCanvas').style.backgroundImage = 'url("D:/JuegoTrabajo/assets/giphy2.gif")';
         }
       }
 
@@ -296,16 +298,21 @@ function main() {
         reposicionarEnemigo(enemigos[i]);
       }
     }
+  }
+
+  function jugando(){
+    moverEnemigos();
     ctx.clearRect(0, 0, w, h);
-    for (let i = 0; i < enemigos.length; i++) {
+    
+     for (let i = 0; i < enemigos.length; i++) {
       enemigos[i].dibujar(ctx);
       jugador.dibujar(ctx);
       bala.dibujar(ctx);
     }
 
     if (jugar) {
-      window.requestAnimationFrame(moverEnemigos);
-    }
+      window.requestAnimationFrame(jugando);
+    }    
   }
 
   function iniciarJuego() {
@@ -315,12 +322,12 @@ function main() {
     jugador.setVidas = 3;
 
     reiniciar();
-    window.requestAnimationFrame(moverEnemigos);
+    window.requestAnimationFrame(jugando);
 
     //AÑADE UN ENEMIGO MAS CADA 9s
     setInterval(() => {
       // eslint-disable-next-line no-undef
-      enemigos.push(new Enemigo(generateRandom(800), 0, 20, 20, undefined, 'red'));
+      enemigos.push(new Enemigo(generateRandomNumber(800), 0, 20, 20, undefined, 'red'));
     }, 9000);
 
     document.getElementById('contador').textContent = contador;

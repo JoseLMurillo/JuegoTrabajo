@@ -28,6 +28,11 @@ h2 {
   font-family: 'Barlow', sans-serif;
 }
 
+.miCanvas {
+  background-image: url("../assets/giphy.gif");
+  background-repeat:repeat;
+}
+
 .gradient-border {
     --border-width: 3px;
   
