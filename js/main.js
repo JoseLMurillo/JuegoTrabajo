@@ -1,3 +1,7 @@
+/*Parte visual, Sprites, background, mandar a las clases lo que se pueda enviar a las clases*/
+
+//COMO PUEDO MEJORAR LA RESPUESTA DE LOS CONTROLES
+
 function main() {
 
   const body = document.getElementById('body');
@@ -7,6 +11,7 @@ function main() {
   const ctx = miCanvas.getContext('2d');
   const w = miCanvas.clientWidth;
   const h = miCanvas.clientHeight;
+  const img = document.getElementById("scream");
 
   let activo = true;
   let jugar = false;

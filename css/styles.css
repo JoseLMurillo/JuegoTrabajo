@@ -1,8 +1,32 @@
-.container {
-    display: flex;
+@import url('https://fonts.googleapis.com/css2?family=Barlow:wght@300&family=Oswald:wght@400;500&display=swap');
+
+#body {
+  background-color: #0f2844;
 }
 
+.container {
+  margin: 20px;
+  display: flex;
+}
+
+.titles {
+  position: relative;
+  margin: auto;
+  padding: 20px;
+  background-color: #e2e2e2;
+  border-radius: 5px;
+  text-align: center;
+}
 /*gradient tomado de https://codepen.io/alphardex/pen/vYEYGzp*/
+
+h1 {
+  align-self: center;
+  font-family: 'Oswald', sans-serif;
+}
+
+h2 {
+  font-family: 'Barlow', sans-serif;
+}
 
 .gradient-border {
     --border-width: 3px;
