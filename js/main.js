@@ -5,6 +5,7 @@
 //AGREGAR SPRITES
   //EMENIGOS, JUGADOR, PROYECTIL
 //AGREGAR FONDOS
+//AGRANDAR LOS ELEMENTOS EN PANTALLA
 
 function main() {
 
@@ -16,6 +17,13 @@ function main() {
   const w = miCanvas.clientWidth;
   const h = miCanvas.clientHeight;
   const img = document.getElementById("scream");
+
+
+  let sprite = new Image();
+  sprite.src = "images/corona.png";
+
+
+  
 
   let activo = true;
   let jugar = false;
@@ -343,7 +351,6 @@ function main() {
   }
 
   boton.addEventListener('click', iniciarJuego);
-
 }
 
 window.addEventListener('load', main);

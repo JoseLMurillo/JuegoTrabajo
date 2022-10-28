@@ -9,6 +9,11 @@ class Enemigo
     #colorRelleno;
     #vx;
     #vy;
+    //////////////////////////////
+    #sprite = new Image();
+    
+
+  /////////////////////////////
 
     constructor(xInicial, yInicial, anchoInicial, altoInicial, colorContorno, colorRelleno, vx)
     {
@@ -20,6 +25,8 @@ class Enemigo
         this.#colorRelleno = colorRelleno || "green";
         this.#vx = vx || 1;
         this.#vy = vx || 1;
+        
+        this.#sprite.src = "C:/Users/Negreta/Documents/UDEA/JuegoTrabajo/assets/corona.png";
     }
 
     dibujar (ctx)
@@ -27,6 +34,7 @@ class Enemigo
         ctx.beginPath();
         ctx.fillStyle = this.#colorRelleno;
         ctx.fillRect(this.#xSupIzq,this.#ySupIzq,this.#ancho,this.#alto);
+        ctx.drawImage(this.#sprite, 0, 0, 20, 20, this.#xSupIzq,this.#ySupIzq, 20, 20);
 
         ctx.strokeStyle = this.#colorContorno;
         ctx.strokeRect(this.#xSupIzq,this.#ySupIzq,this.#ancho,this.#alto);

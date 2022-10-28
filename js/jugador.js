@@ -14,6 +14,8 @@ class Jugador {
 
   #vidas;
 
+  #sprite = new Image();
+
   constructor(xInicial, yInicial, anchoInicial, altoInicial, colorContorno, colorRelleno) {
     this.#xSupIzq = xInicial || 100;
     this.#ySupIzq = yInicial || 50;
@@ -22,6 +24,7 @@ class Jugador {
     this.#colorContorno = colorContorno || 'blue';
     this.#colorRelleno = colorRelleno || 'green';
     this.#vidas = 3;
+    this.#sprite.src = "C:/Users/Negreta/Documents/UDEA/JuegoTrabajo/assets/maincharacter.png";
   }
 
   dibujar(ctx) {
@@ -29,6 +32,7 @@ class Jugador {
     ctx.fillStyle = this.#colorRelleno;
     ctx.fillRect(this.#xSupIzq, this.#ySupIzq, this.#ancho, this.#alto);
     ctx.strokeStyle = this.#colorContorno;
+    ctx.drawImage(this.#sprite, 0, 0, 20, 20, this.#xSupIzq,this.#ySupIzq, 20, 20);
     ctx.strokeRect(this.#xSupIzq, this.#ySupIzq, this.#ancho, this.#alto);
     ctx.closePath();
   }
