@@ -18,13 +18,7 @@ function main() {
   const h = miCanvas.clientHeight;
   const img = document.getElementById("scream");
 
-
-  let sprite = new Image();
-  sprite.src = "images/corona.png";
-
-
   
-
   let activo = true;
   let jugar = false;
   let contador = 0;
@@ -35,9 +29,9 @@ function main() {
   const tituloOver = document.getElementById('gameover');
 
   // eslint-disable-next-line no-undef
-  const jugador = new Jugador(w / 2, h / 2, 20, 20, undefined, 'blue');
+  const jugador = new Jugador(w / 2, h / 2, 40, 40, undefined, 'blue');
   // eslint-disable-next-line no-undef
-  const bala = new Proyectil((w / 2) + 20, (h / 2) - 20, 20, 20);
+  const bala = new Proyectil((w / 2) + 40, (h / 2) - 40, 40, 40);
 
   //EVENTOS
   body.addEventListener('keydown', moverJugador);
@@ -65,7 +59,7 @@ function main() {
 
     for (let i = 0; i < 5; i++) {
       // eslint-disable-next-line no-undef
-      enemigos.push(new Enemigo(generateRandomNumber(0,800), 0, 20, 20, undefined, 'red', generateRandomNumber(1,0)));
+      enemigos.push(new Enemigo(generateRandomNumber(0,800), 0, 40, 40, undefined, 'red', generateRandomNumber(1,0)));
     }
   }
 
@@ -164,40 +158,40 @@ function main() {
         activo = false;
 
         for (let i = 0; i < enemigos.length; i++) {
-          if (bala.xSupIzq < (e.clientX - 20)) {
+          if (bala.xSupIzq < (e.clientX - 40)) {
             bala.moverDerecha();
           }
 
-          if (bala.ySupIzq > (e.clientY - 20)) {
+          if (bala.ySupIzq > (e.clientY - 40)) {
             bala.moverArriba();
           }
 
-          if (bala.ySupIzq < (e.clientY - 20)) {
+          if (bala.ySupIzq < (e.clientY - 40)) {
             bala.moverAbajo();
           }
 
-          if (bala.xSupIzq > (e.clientX - 20)) {
+          if (bala.xSupIzq > (e.clientX - 40)) {
             bala.moverAbajoIzquierda();
           }
 
-          if ((e.clientX - 20) > bala.xSupIzq && (e.clientY - 20) < bala.ySupIzq) {
+          if ((e.clientX - 40) > bala.xSupIzq && (e.clientY - 40) < bala.ySupIzq) {
             bala.moverArribaDerecha();
           }
 
-          if ((e.clientX - 20) > bala.xSupIzq && (e.clientY - 20) > bala.ySupIzq) {
+          if ((e.clientX - 40) > bala.xSupIzq && (e.clientY - 40) > bala.ySupIzq) {
             bala.moverAbajoDerecha();
           }
 
-          if ((e.clientX - 20) < bala.xSupIzq && (e.clientY - 20) > bala.ySupIzq) {
+          if ((e.clientX - 40) < bala.xSupIzq && (e.clientY - 40) > bala.ySupIzq) {
             bala.moverAbajoIzquierda();
           }
 
-          if ((e.clientX - 20) < bala.xSupIzq && (e.clientY - 20) < bala.ySupIzq) {
+          if ((e.clientX - 40) < bala.xSupIzq && (e.clientY - 40) < bala.ySupIzq) {
             bala.moverArribaIzquierda();
           }
 
           // FINALIZAR ANIMACION
-          if ((e.clientY - 20) == bala.ySupIzq && (e.clientX - 20) == bala.xSupIzq) {
+          if ((e.clientY - 40) == bala.ySupIzq && (e.clientX - 40) == bala.xSupIzq) {
             clearInterval(parar);
             activo = true;
           }
@@ -267,7 +261,7 @@ function main() {
       }
 
       // COLICION CON JUGADOR
-      if (jugador.colisionarConX(enemigos[i]) || jugador.xSupIzq <= 0 || (jugador.xSupIzq + 20) >= 800 || jugador.ySupIzq <= 0 || jugador.ySupIzq + 20 >= 600) {
+      if (jugador.colisionarConX(enemigos[i]) || jugador.xSupIzq <= 0 || (jugador.xSupIzq + 40) >= 800 || jugador.ySupIzq <= 0 || jugador.ySupIzq + 40 >= 600) {
 
         jugador.setVidas = jugador.getVidas - 1;
 
@@ -335,7 +329,7 @@ function main() {
     //AÑADE UN ENEMIGO MAS CADA 9s
     setInterval(() => {
       // eslint-disable-next-line no-undef
-      enemigos.push(new Enemigo(generateRandomNumber(800), 0, 20, 20, undefined, 'red'));
+      enemigos.push(new Enemigo(generateRandomNumber(800), 0, 40, 40, undefined, 'red'));
     }, 9000);
 
     document.getElementById('contador').textContent = contador;

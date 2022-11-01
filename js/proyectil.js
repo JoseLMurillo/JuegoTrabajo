@@ -8,23 +8,26 @@ class Proyectil
     #colorContorno;
     #colorRelleno;
 
+    #sprite = new Image();
+
     constructor(xInicial, yInicial, anchoInicial, altoInicial, colorContorno, colorRelleno)
     {
         this.#xSupIzq = xInicial || 100;
         this.#ySupIzq = yInicial || 50;
         this.#ancho = anchoInicial || 50;
-        this.#alto = altoInicial || 30;
+        this.#alto = altoInicial || 40;
         this.#colorContorno = colorContorno || 'rgba(255, 255, 255, 0)';
         this.#colorRelleno = colorRelleno || 'gold';
+        this.#sprite.src = "./assets/proyectil.png";
     }
 
     dibujar (ctx)
     {
         ctx.beginPath();
-        ctx.fillStyle = this.#colorRelleno;
+        ctx.fillStyle = "#0080FF00";
         ctx.fillRect(this.#xSupIzq,this.#ySupIzq,this.#ancho,this.#alto);
-
-        ctx.strokeStyle = this.#colorContorno;
+        ctx.drawImage(this.#sprite, 0, 0, 40, 40, this.#xSupIzq,this.#ySupIzq, 40, 40);
+        ctx.strokeStyle = "#0080FF00";
         ctx.strokeRect(this.#xSupIzq,this.#ySupIzq,this.#ancho,this.#alto);
         ctx.closePath();
     }

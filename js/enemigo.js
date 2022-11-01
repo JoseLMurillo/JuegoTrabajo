@@ -20,23 +20,24 @@ class Enemigo
         this.#xSupIzq = xInicial || 100;
         this.#ySupIzq = yInicial || 50;
         this.#ancho = anchoInicial || 50;
-        this.#alto = altoInicial || 30;
-        this.#colorContorno = colorContorno || "blue";
-        this.#colorRelleno = colorRelleno || "green";
+        this.#alto = altoInicial || 40;
+        this.#colorContorno = colorContorno || "#0000ffff";
+        this.#colorRelleno = colorRelleno || "#0000ffff";
         this.#vx = vx || 1;
         this.#vy = vx || 1;
         
-        this.#sprite.src = "C:/Users/Negreta/Documents/UDEA/JuegoTrabajo/assets/corona.png";
+        this.#sprite.src = "./assets/corona.png";
     }
 
     dibujar (ctx)
     {
         ctx.beginPath();
-        ctx.fillStyle = this.#colorRelleno;
+        //ctx.fillStyle = this.#colorRelleno;
+        ctx.fillStyle = "#0080FF00";
         ctx.fillRect(this.#xSupIzq,this.#ySupIzq,this.#ancho,this.#alto);
-        ctx.drawImage(this.#sprite, 0, 0, 20, 20, this.#xSupIzq,this.#ySupIzq, 20, 20);
-
-        ctx.strokeStyle = this.#colorContorno;
+        ctx.drawImage(this.#sprite, 0, 0, 40, 40, this.#xSupIzq,this.#ySupIzq, 40, 40);
+        ctx.strokeStyle = "#0080FF00";
+        //ctx.strokeStyle = this.#colorContorno;
         ctx.strokeRect(this.#xSupIzq,this.#ySupIzq,this.#ancho,this.#alto);
         ctx.closePath();
     }
@@ -107,7 +108,7 @@ class Enemigo
         return this.#alto;
     }
    
-    get colorRelleno ( )
+    /* get colorRelleno ( )
     {
         return this.#colorRelleno;
     }
@@ -115,7 +116,7 @@ class Enemigo
     set colorRelleno (value)
     {
         this.#colorRelleno = value;
-    }
+    } */
 
     get vx ( )
     {

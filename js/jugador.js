@@ -20,19 +20,19 @@ class Jugador {
     this.#xSupIzq = xInicial || 100;
     this.#ySupIzq = yInicial || 50;
     this.#ancho = anchoInicial || 50;
-    this.#alto = altoInicial || 30;
+    this.#alto = altoInicial || 40;
     this.#colorContorno = colorContorno || 'blue';
     this.#colorRelleno = colorRelleno || 'green';
     this.#vidas = 3;
-    this.#sprite.src = "C:/Users/Negreta/Documents/UDEA/JuegoTrabajo/assets/maincharacter.png";
+    this.#sprite.src = "./assets/maincharacter.png";
   }
 
   dibujar(ctx) {
     ctx.beginPath();
-    ctx.fillStyle = this.#colorRelleno;
+    //ctx.fillStyle = this.#colorRelleno;
     ctx.fillRect(this.#xSupIzq, this.#ySupIzq, this.#ancho, this.#alto);
-    ctx.strokeStyle = this.#colorContorno;
-    ctx.drawImage(this.#sprite, 0, 0, 20, 20, this.#xSupIzq,this.#ySupIzq, 20, 20);
+    //ctx.strokeStyle = this.#colorContorno;
+    ctx.drawImage(this.#sprite, 0, 0, 40, 40, this.#xSupIzq,this.#ySupIzq, 40, 40);
     ctx.strokeRect(this.#xSupIzq, this.#ySupIzq, this.#ancho, this.#alto);
     ctx.closePath();
   }
@@ -62,9 +62,9 @@ class Jugador {
     let respuesta;
 
       if(this.#xSupIzq < Math.round(otroRectangulo.xSupIzq)+10 && 
-      (this.#xSupIzq+20) > Math.round(otroRectangulo.xSupIzq)+10 && 
+      (this.#xSupIzq+40) > Math.round(otroRectangulo.xSupIzq)+10 && 
       this.#ySupIzq < Math.round(otroRectangulo.ySupIzq)+10 && 
-      (this.#ySupIzq+20) > Math.round(otroRectangulo.ySupIzq)+10) {
+      (this.#ySupIzq+40) > Math.round(otroRectangulo.ySupIzq)+10) {
       respuesta = true;
      }else {
       respuesta = false;
