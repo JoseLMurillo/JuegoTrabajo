@@ -1,12 +1,3 @@
-/*Parte visual, Sprites, background, mandar a las clases lo que se pueda enviar a las clases*/
-
-//COMO PUEDO MEJORAR LA RESPUESTA DE LOS CONTROLES
-//MANDAR A LOS METODOS LO QUE SE PUEDA COLOCAR EN LOS METODOS
-//AGREGAR SPRITES
-  //EMENIGOS, JUGADOR, PROYECTIL
-//AGREGAR FONDOS
-//AGRANDAR LOS ELEMENTOS EN PANTALLA
-
 function main() {
 
   const body = document.getElementById('body');
@@ -59,7 +50,7 @@ function main() {
 
     for (let i = 0; i < 5; i++) {
       // eslint-disable-next-line no-undef
-      enemigos.push(new Enemigo(generateRandomNumber(0,800), 0, 40, 40, undefined, 'red', generateRandomNumber(1,0)));
+      enemigos.push(new Enemigo(generateRandomNumber(0,800), 0, 40, 40, generateRandomNumber(1,0)));
     }
   }
 
@@ -291,7 +282,7 @@ function main() {
         if (jugador.getVidas < 0) {
           jugar = false;
           mostrarElementos(false);
-          document.getElementById('miCanvas').style.backgroundImage = 'url("D:/JuegoTrabajo/assets/giphy2.gif")';
+          document.getElementById('miCanvas').style.backgroundImage = 'url("assets/giphy2.gif")';
         }
       }
 
@@ -334,6 +325,8 @@ function main() {
 
     document.getElementById('contador').textContent = contador;
     document.getElementById('contadorVidas').textContent = jugador.getVidas;
+    document.getElementById('miCanvas').style.backgroundImage = 'url("assets/giphy.gif")';
+
   }
 
   //MUESTRA ELEMENTOS

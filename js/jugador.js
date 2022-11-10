@@ -8,42 +8,26 @@ class Jugador {
 
   #alto;
 
-  #colorContorno;
-
-  #colorRelleno;
-
   #vidas;
 
   #sprite = new Image();
 
-  constructor(xInicial, yInicial, anchoInicial, altoInicial, colorContorno, colorRelleno) {
+  constructor(xInicial, yInicial, anchoInicial, altoInicial) {
     this.#xSupIzq = xInicial || 100;
     this.#ySupIzq = yInicial || 50;
     this.#ancho = anchoInicial || 50;
     this.#alto = altoInicial || 40;
-    this.#colorContorno = colorContorno || 'blue';
-    this.#colorRelleno = colorRelleno || 'green';
     this.#vidas = 3;
     this.#sprite.src = "./assets/maincharacter.png";
   }
 
   dibujar(ctx) {
     ctx.beginPath();
-    //ctx.fillStyle = this.#colorRelleno;
     ctx.fillRect(this.#xSupIzq, this.#ySupIzq, this.#ancho, this.#alto);
-    //ctx.strokeStyle = this.#colorContorno;
     ctx.drawImage(this.#sprite, 0, 0, 40, 40, this.#xSupIzq,this.#ySupIzq, 40, 40);
     ctx.strokeRect(this.#xSupIzq, this.#ySupIzq, this.#ancho, this.#alto);
     ctx.closePath();
   }
-
-  get limiteIzq() { return this.#xSupIzq; }
-
-  get limiteDer() { return this.#xSupIzq + this.#ancho; }
-
-  get limiteArriba() { return this.#ySupIzq;}
-
-  get limiteAbajo() { return this.#ySupIzq + this.#alto;}
 
   colisionarCon(otroRectangulo) {
     let respuesta;
@@ -73,17 +57,13 @@ class Jugador {
     return respuesta;
   }
 
-  conectarCon(ctx, otroRectangulo, color) {
-    ctx.beginPath();
+  get limiteIzq() { return this.#xSupIzq; }
 
-    ctx.beginPath();
-    ctx.moveTo(this.limiteDer, this.limiteArriba);
-    ctx.lineTo(otroRectangulo.limiteIzq, otroRectangulo.limiteArriba);
-    // ctx.strokeStyle = this.#colorContorno;
-    ctx.strokeStyle = color;
-    ctx.stroke();
-    ctx.closePath();
-  }
+  get limiteDer() { return this.#xSupIzq + this.#ancho; }
+
+  get limiteArriba() { return this.#ySupIzq;}
+
+  get limiteAbajo() { return this.#ySupIzq + this.#alto;}
 
   get xSupIzq() {
     return this.#xSupIzq;

@@ -5,9 +5,8 @@ class Proyectil
     #ySupIzq;
     #ancho;
     #alto;
-    #colorContorno;
+    #colorTrasparente = "#0080FF00";
     #colorRelleno;
-
     #sprite = new Image();
 
     constructor(xInicial, yInicial, anchoInicial, altoInicial, colorContorno, colorRelleno)
@@ -16,37 +15,18 @@ class Proyectil
         this.#ySupIzq = yInicial || 50;
         this.#ancho = anchoInicial || 50;
         this.#alto = altoInicial || 40;
-        this.#colorContorno = colorContorno || 'rgba(255, 255, 255, 0)';
-        this.#colorRelleno = colorRelleno || 'gold';
         this.#sprite.src = "./assets/proyectil.png";
     }
 
     dibujar (ctx)
     {
         ctx.beginPath();
-        ctx.fillStyle = "#0080FF00";
+        ctx.fillStyle = this.#colorTrasparente;
         ctx.fillRect(this.#xSupIzq,this.#ySupIzq,this.#ancho,this.#alto);
         ctx.drawImage(this.#sprite, 0, 0, 40, 40, this.#xSupIzq,this.#ySupIzq, 40, 40);
-        ctx.strokeStyle = "#0080FF00";
+        ctx.strokeStyle = this.#colorTrasparente;
         ctx.strokeRect(this.#xSupIzq,this.#ySupIzq,this.#ancho,this.#alto);
         ctx.closePath();
-    }
-
-    get limiteIzq ()
-    {
-        return this.#xSupIzq;
-    }
-    get limiteDer ()
-    {
-        return this.#xSupIzq + this.#ancho;
-    }
-    get limiteArriba()
-    {
-        return this.#ySupIzq;
-    }
-    get limiteAbajo()
-    {
-        return this.#ySupIzq + this.#alto;
     }
 
     colisionarCon(otroRectangulo)
@@ -66,6 +46,23 @@ class Proyectil
             respuesta = false;
         }
         return respuesta;
+    }
+
+    get limiteIzq ()
+    {
+        return this.#xSupIzq;
+    }
+    get limiteDer ()
+    {
+        return this.#xSupIzq + this.#ancho;
+    }
+    get limiteArriba()
+    {
+        return this.#ySupIzq;
+    }
+    get limiteAbajo()
+    {
+        return this.#ySupIzq + this.#alto;
     }
 
     get xSupIzq ( )
